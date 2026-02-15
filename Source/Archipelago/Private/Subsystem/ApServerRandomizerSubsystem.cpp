@@ -527,16 +527,18 @@ void AApServerRandomizerSubsystem::OnAvaiableSchematicsChanged() {
 	int maxAvailableTechTier = phaseManager->GetCurrentGamePhase()->mLastTierOfPhase;
 	int currentPlayerSlot = connectionInfo->GetCurrentPlayerSlot();
 
-	for (const TPair<TSubclassOf<UFGSchematic>, TArray<FApNetworkItem>>& itemPerMilestone : locationsPerMilestone) {
-		if (UFGSchematic::GetTechTier(itemPerMilestone.Key) <= maxAvailableTechTier) {
-			for (const FApNetworkItem& item : itemPerMilestone.Value) {
-				if (item.player != currentPlayerSlot 
-					&& (item.flags & 0b011) > 0
-					&& !hintedLocations.Contains(item.location))
-						locationHintsToPublish.Add(item.location);
+	if (slotDataSubsystem->ScoutLocations) {
+		for (const TPair<TSubclassOf<UFGSchematic>, TArray<FApNetworkItem>>& itemPerMilestone : locationsPerMilestone) {
+			if (UFGSchematic::GetTechTier(itemPerMilestone.Key) <= maxAvailableTechTier) {
+				for (const FApNetworkItem& item : itemPerMilestone.Value) {
+					if (item.player != currentPlayerSlot 
+						&& (item.flags & 0b011) > 0
+						&& !hintedLocations.Contains(item.location))
+							locationHintsToPublish.Add(item.location);
+					}
+				}
 			}
 		}
-	}
 
 	TArray<ESchematicType> types;
 	types.Add(ESchematicType::EST_Alternate);
