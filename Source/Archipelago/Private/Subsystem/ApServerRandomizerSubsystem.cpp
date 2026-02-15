@@ -533,7 +533,7 @@ void AApServerRandomizerSubsystem::OnAvaiableSchematicsChanged() {
 				for (const FApNetworkItem& item : itemPerMilestone.Value) {
 					if (item.player != currentPlayerSlot 
 						&& (item.flags & 0b011) > 0
-						&& !hintedLocations.Contains(item.location))
+						&& !hintedLocations.Contains(item.location)) 
 							locationHintsToPublish.Add(item.location);
 					}
 				}
