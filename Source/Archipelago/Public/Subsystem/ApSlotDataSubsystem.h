@@ -204,6 +204,8 @@ public:
 	bool EnergyLink;
 	UPROPERTY(BlueprintReadOnly, SaveGame)
 	bool DeathLink;
+	UPROPERTY(BlueprintReadOnly, SaveGame)
+	bool ScoutLocations;
 
 	UPROPERTY(BlueprintReadOnly, SaveGame, Replicated)
 	TArray<int64> starterRecipeIds;
