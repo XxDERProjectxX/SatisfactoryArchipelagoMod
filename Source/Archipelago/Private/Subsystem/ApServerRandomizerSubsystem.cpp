@@ -527,7 +527,7 @@ void AApServerRandomizerSubsystem::OnAvaiableSchematicsChanged() {
 	int maxAvailableTechTier = phaseManager->GetCurrentGamePhase()->mLastTierOfPhase;
 	int currentPlayerSlot = connectionInfo->GetCurrentPlayerSlot();
 
-	if (slotDataSubsystem->ScoutLocations) {
+	if (slotData->ScoutLocations) {
 		for (const TPair<TSubclassOf<UFGSchematic>, TArray<FApNetworkItem>>& itemPerMilestone : locationsPerMilestone) {
 			if (UFGSchematic::GetTechTier(itemPerMilestone.Key) <= maxAvailableTechTier) {
 				for (const FApNetworkItem& item : itemPerMilestone.Value) {
