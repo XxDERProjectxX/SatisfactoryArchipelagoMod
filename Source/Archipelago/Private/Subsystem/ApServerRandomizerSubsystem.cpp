@@ -119,11 +119,6 @@ bool AApServerRandomizerSubsystem::InitializeTick() {
 void AApServerRandomizerSubsystem::ScoutArchipelagoItems() {
 	UE_LOGFMT(LogApServerRandomizerSubsystem, Display, "AApServerRandomizerSubsystem::ScoutArchipelagoItems()");
 
-	if (!ap->ShouldAutoRevealLocations()) {
-        UE_LOGFMT(LogApServerRandomizerSubsystem, Display, "Auto-reveal disabled, skipping location scout");
-        return;
-    }
-	
 	TMap<int64, FApNetworkItem> scoutResults = ap->ScoutLocation(ap->GetAllLocations());
 
 	scoutedLocations.Empty();
