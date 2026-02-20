@@ -535,10 +535,10 @@ void AApServerRandomizerSubsystem::OnAvaiableSchematicsChanged() {
 						&& (item.flags & 0b011) > 0
 						&& !hintedLocations.Contains(item.location)) 
 							locationHintsToPublish.Add(item.location);
-					}
 				}
 			}
 		}
+	}
 
 	TArray<ESchematicType> types;
 	types.Add(ESchematicType::EST_Alternate);
