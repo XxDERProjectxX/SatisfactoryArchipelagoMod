@@ -441,7 +441,8 @@ void AApServerRandomizerSubsystem::OnMamResearchTreeUnlocked(TSubclassOf<class U
 void AApServerRandomizerSubsystem::OnUnclaimedHardDrivesUpdated() {
 	if (!slotData->ScoutLocations) {
 		return;
-		
+	}
+	
 	UE_LOGFMT(LogApServerRandomizerSubsystem, Display, "AApSubSystem::OnUnclaimedHardDrivesUpdated()");
 
 	TSet<int64> locationHintsToPublish;
@@ -528,6 +529,7 @@ void AApServerRandomizerSubsystem::OnAvaiableSchematicsChanged() {
 	
 	if (!slotData->ScoutLocations) {
 		return;
+	}
 	
 	TSet<int64> locationHintsToPublish;
 
