@@ -198,8 +198,7 @@ EApSlotDataState AApSlotDataSubsystem::TryLoadSlotDataFromServer(FString slotDat
 	if (!parsedJson->TryGetBoolField("DeathLink", DeathLink))
 		DeathLink = false;
 	if (!options->TryGetBoolField("ScoutLocations", ScoutLocations))
-        ScoutLocations = false;
-						// true
+        ScoutLocations = true;
 
 	hasLoadedSlotData = true;
 	hasLoadedExplorationData = true;

@@ -440,8 +440,7 @@ void AApServerRandomizerSubsystem::OnMamResearchTreeUnlocked(TSubclassOf<class U
 }
 
 void AApServerRandomizerSubsystem::OnUnclaimedHardDrivesUpdated() {
-	AApSlotDataSubsystem* slotDataSubsystem = AApSlotDataSubsystem::Get(world);
-	if (!slotDataSubsystem->ScoutLocations) {
+	if (!slotData->ScoutLocations) {
 		return;
 	}
 	
@@ -528,7 +527,6 @@ void AApServerRandomizerSubsystem::OnSchematicCompleted(TSubclassOf<class UFGSch
 }
 
 void AApServerRandomizerSubsystem::OnAvaiableSchematicsChanged() {
-	
 	if (!slotData->ScoutLocations) {
 		return;
 	}
