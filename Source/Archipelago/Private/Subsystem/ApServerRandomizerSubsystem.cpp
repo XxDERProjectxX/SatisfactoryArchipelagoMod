@@ -1,4 +1,5 @@
 #include "Subsystem/ApServerRandomizerSubsystem.h"
+#include "Subsystem/ApSlotDataSubsystem.h"
 
 #include "ConfigPropertyBool.h"
 #include "ConfigPropertyInteger.h"
@@ -439,7 +440,8 @@ void AApServerRandomizerSubsystem::OnMamResearchTreeUnlocked(TSubclassOf<class U
 }
 
 void AApServerRandomizerSubsystem::OnUnclaimedHardDrivesUpdated() {
-	if (!slotData->ScoutLocations) {
+	AApSlotDataSubsystem* slotDataSubsystem = AApSlotDataSubsystem::Get(world);
+	if (!slotDataSubsystem->ScoutLocations) {
 		return;
 	}
 	
