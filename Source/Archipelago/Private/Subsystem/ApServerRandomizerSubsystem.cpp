@@ -439,6 +439,9 @@ void AApServerRandomizerSubsystem::OnMamResearchTreeUnlocked(TSubclassOf<class U
 }
 
 void AApServerRandomizerSubsystem::OnUnclaimedHardDrivesUpdated() {
+	if (!slotData->ScoutLocations) {
+		return;
+		
 	UE_LOGFMT(LogApServerRandomizerSubsystem, Display, "AApSubSystem::OnUnclaimedHardDrivesUpdated()");
 
 	TSet<int64> locationHintsToPublish;
@@ -522,23 +525,26 @@ void AApServerRandomizerSubsystem::OnSchematicCompleted(TSubclassOf<class UFGSch
 }
 
 void AApServerRandomizerSubsystem::OnAvaiableSchematicsChanged() {
+	
+	if (!slotData->ScoutLocations) {
+		return;
+	
 	TSet<int64> locationHintsToPublish;
 
 	int maxAvailableTechTier = phaseManager->GetCurrentGamePhase()->mLastTierOfPhase;
 	int currentPlayerSlot = connectionInfo->GetCurrentPlayerSlot();
 
-	if (slotData->ScoutLocations) {
-		for (const TPair<TSubclassOf<UFGSchematic>, TArray<FApNetworkItem>>& itemPerMilestone : locationsPerMilestone) {
-			if (UFGSchematic::GetTechTier(itemPerMilestone.Key) <= maxAvailableTechTier) {
-				for (const FApNetworkItem& item : itemPerMilestone.Value) {
-					if (item.player != currentPlayerSlot 
-						&& (item.flags & 0b011) > 0
-						&& !hintedLocations.Contains(item.location)) 
-							locationHintsToPublish.Add(item.location);
-				}
+	for (const TPair<TSubclassOf<UFGSchematic>, TArray<FApNetworkItem>>& itemPerMilestone : locationsPerMilestone) {
+		if (UFGSchematic::GetTechTier(itemPerMilestone.Key) <= maxAvailableTechTier) {
+			for (const FApNetworkItem& item : itemPerMilestone.Value) {
+				if (item.player != currentPlayerSlot 
+					&& (item.flags & 0b011) > 0
+					&& !hintedLocations.Contains(item.location)) 
+						locationHintsToPublish.Add(item.location);
 			}
 		}
 	}
+	
 
 	TArray<ESchematicType> types;
 	types.Add(ESchematicType::EST_Alternate);
@@ -549,7 +555,6 @@ void AApServerRandomizerSubsystem::OnAvaiableSchematicsChanged() {
 	SManager->GetAvailableNonPurchasedSchematicsOfTypes(types, availableSchematics);
 
 	TSet<int64> visiableMamNodes = mamTreeSubsystem->GetVisibleMamNodeIds();
-
 	if (SManager->IsSchematicPurchased(ItemSchematics[mappingSubsystem->GetMamItemId()])) {
 		for (const TPair<TSubclassOf<UFGSchematic>, FApNetworkItem>& itemPerMamNode : locationPerMamNode) {
 			if (itemPerMamNode.Value.player != currentPlayerSlot
@@ -559,6 +564,7 @@ void AApServerRandomizerSubsystem::OnAvaiableSchematicsChanged() {
 					locationHintsToPublish.Add(itemPerMamNode.Value.location);
 		}
 	}
+	
 
 	if (SManager->IsSchematicPurchased(ItemSchematics[mappingSubsystem->GetAwesomeShopItemId()])) {
 		for (const TPair<TSubclassOf<UFGSchematic>, FApNetworkItem>& itemPerShopNode : locationPerShopNode) {
@@ -568,7 +574,7 @@ void AApServerRandomizerSubsystem::OnAvaiableSchematicsChanged() {
 					locationHintsToPublish.Add(itemPerShopNode.Value.location);
 		}
 	}
-
+	
 	ap->CreateLocationHint(locationHintsToPublish);
 
 	hintedLocations.Append(locationHintsToPublish);
